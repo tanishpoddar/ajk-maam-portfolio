@@ -1,0 +1,156 @@
+/* components/cards.css */
+/* Publication Cards */
+.publication-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.publication-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.publication-card .title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-blue);
+    margin-bottom: 0.5rem;
+}
+
+.publication-card .authors {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.publication-card .journal {
+    font-size: 0.9rem;
+    color: #444;
+    font-style: italic;
+}
+
+.publication-card .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+/* Patent Cards */
+.patent-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.patent-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.patent-card .status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.patent-card .status-badge.granted {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.patent-card .status-badge.pending {
+    background-color: #FFF3E0;
+    color: #E65100;
+}
+
+/* Timeline Cards */
+.timeline-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.timeline-card::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--primary-blue);
+    border: 3px solid var(--deep-blue);
+    border-radius: 50%;
+}
+
+.timeline-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Award Cards */
+.award-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.award-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.award-card .icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 1rem;
+    background: var(--primary-blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.award-card .icon svg {
+    width: 30px;
+    height: 30px;
+    color: var(--deep-blue);
+}
+
+/* Responsive Designs */
+@media (max-width: 768px) {
+    .publication-card,
+    .patent-card,
+    .timeline-card,
+    .award-card {
+        padding: 1rem;
+    }
+
+    .publication-card .title {
+        font-size: 1rem;
+    }
+
+    .award-card .icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .award-card .icon svg {
+        width: 25px;
+        height: 25px;
+    }
+}

@@ -1,0 +1,100 @@
+/* style.css */
+/* Base styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Animation utilities */
+[data-aos] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+[data-aos].aos-animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* About section animations */
+.academic-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease-out;
+}
+
+.academic-card.aos-animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.academic-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Expertise and memberships animations */
+.expertise-item, .membership-item {
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.5s ease-out;
+}
+
+.expertise-item.aos-animate, .membership-item.aos-animate {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Language proficiency card animations */
+.language-card {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease-out;
+}
+
+.language-card.aos-animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Custom cursor */
+.cursor {
+    width: 10px;
+    height: 10px;
+    background: rgba(144, 202, 249, 0.8);
+    border-radius: 100%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+    transition: all 0.1s ease-out;
+    mix-blend-mode: difference;
+}
+
+.cursor-follower {
+    width: 30px;
+    height: 30px;
+    background: rgba(227, 242, 253, 0.4);
+    border-radius: 100%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.3s ease-out;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #90caf9;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #64b5f6;
+}
