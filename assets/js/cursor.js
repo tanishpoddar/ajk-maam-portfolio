@@ -1,38 +1,52 @@
 // cursor.js
 document.addEventListener('DOMContentLoaded', () => {
-    const cursor = document.querySelector('.cursor');
-    let mouseX = 0;
-    let mouseY = 0;
+    // Create cursor element
+    const cursor = document.createElement('div');
+    cursor.classList.add('cursor-ring');
+    document.body.appendChild(cursor);
 
-    // Update cursor position
+    // Update cursor position instantly
     document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        
-        // Update cursor position immediately
-        cursor.style.left = mouseX + 'px';
-        cursor.style.top = mouseY + 'px';
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
     });
 
-    // Add hover effect for all links and interactive elements
-    const links = document.querySelectorAll('a, button, .interactive');
-    links.forEach(link => {
-        link.addEventListener('mouseenter', () => {
-            cursor.classList.add('link-hover');
+    // Ctrl key handling
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Control') {
+            document.body.classList.add('ctrl-pressed');
+        }
+    });
+
+    document.addEventListener('keyup', (e) => {
+        if (e.key === 'Control') {
+            document.body.classList.remove('ctrl-pressed');
+        }
+    });
+
+    // Add hover effect for interactive elements
+    const interactiveElements = document.querySelectorAll(`
+        a, button, .interactive, input, select, textarea,
+        [role="button"], [type="button"], [type="submit"],
+        [type="reset"], [contenteditable="true"]
+    `);
+
+    interactiveElements.forEach(element => {
+        element.addEventListener('mouseenter', () => {
+            document.body.classList.add('link-hover');
         });
         
-        link.addEventListener('mouseleave', () => {
-            cursor.classList.remove('link-hover');
+        element.addEventListener('mouseleave', () => {
+            document.body.classList.remove('link-hover');
         });
     });
 
-    // Hide cursor when leaving window
+    // Handle cursor visibility
     document.addEventListener('mouseleave', () => {
-        cursor.style.opacity = '0';
+        cursor.classList.add('cursor-hidden');
     });
 
-    // Show cursor when entering window
     document.addEventListener('mouseenter', () => {
-        cursor.style.opacity = '1';
+        cursor.classList.remove('cursor-hidden');
     });
 });

@@ -98,3 +98,82 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #64b5f6;
 }
+/* Publication card styles */
+.publication-card {
+    position: relative;
+    width: 100%;
+}
+
+.partially-visible {
+    position: relative;
+    overflow: hidden;
+    max-height: 250px; /* Increased for mobile */
+}
+
+.overlay-gradient {
+    position: relative;
+    min-height: 200px; /* Minimum height to ensure content visibility */
+}
+
+.overlay-gradient::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,1) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.load-more-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    white-space: nowrap;
+    min-width: 200px;
+    padding: 10px 20px;
+    background-color: #3B82F6;
+    color: white;
+    border-radius: 9999px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.load-more-btn:hover {
+    background-color: #2563EB;
+}
+
+/* Mobile specific adjustments */
+@media (max-width: 768px) {
+    .partially-visible {
+        max-height: 300px; /* Even more height for mobile */
+    }
+
+    .overlay-gradient {
+        min-height: 250px;
+    }
+
+    .load-more-btn {
+        bottom: 30px;
+        width: 80%; /* Wider button on mobile */
+        max-width: 300px;
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+}
+
+/* Small mobile adjustments */
+@media (max-width: 480px) {
+    .partially-visible {
+        max-height: 350px;
+    }
+
+    .load-more-btn {
+        bottom: 40px;
+        width: 90%;
+    }
+}

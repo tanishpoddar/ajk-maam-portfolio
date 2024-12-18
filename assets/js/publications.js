@@ -272,7 +272,6 @@ document.addEventListener('DOMContentLoaded', () => {
             isbn: '978-93-5636-355-7'
         }
     ];
-    
 
     const publicationsGrid = document.getElementById('publications-grid');
     const searchInput = document.getElementById('publication-search');
@@ -281,13 +280,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentFilter = 'all';
     let searchQuery = '';
-    let visibleCount = 9;
+    let visibleCount = 1; // Show only 1 card initially
 
-    function createPublicationCard(pub) {
+    function createPublicationCard(pub, index, totalVisible) {
         const card = document.createElement('div');
-        card.className = 'publication-card opacity-0'; // Start with opacity 0 for animation
+        const isPartiallyVisible = index === totalVisible;
+        
+        card.className = `publication-card opacity-0 ${isPartiallyVisible ? 'partially-visible' : ''}`;
+        
         card.innerHTML = `
-            <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300">
+            <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 
+                ${isPartiallyVisible ? 'overlay-gradient' : ''}">
                 <div class="text-xs text-blue-500 font-semibold mb-2">${pub.year} • ${pub.type}</div>
                 <h3 class="text-lg font-semibold text-blue-900 mb-3">${pub.title}</h3>
                 <p class="text-gray-600 text-sm mb-4">${pub.authors}</p>
@@ -302,18 +305,44 @@ document.addEventListener('DOMContentLoaded', () => {
                         </a>
                     ` : ''}
                 </div>
+                ${isPartiallyVisible ? `
+                    <div class="absolute bottom-0 left-0 right-0 text-center pb-4 z-10">
+                        <button class="load-more-btn bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl">
+                            Load More Publications
+                        </button>
+                    </div>
+                ` : ''}
             </div>
         `;
+
+        if (isPartiallyVisible) {
+            card.querySelector('.load-more-btn').addEventListener('click', () => {
+                visibleCount += 5; // Increase by 5 when clicked
+                filterPublications();
+            });
+        }
+
         return card;
     }
 
-    function filterPublications() {
+        function filterPublications() {
         if (!publicationsGrid) return;
 
         const filteredPubs = publications.filter(pub => {
             const matchesFilter = currentFilter === 'all' || pub.type === currentFilter;
-            const matchesSearch = pub.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                pub.authors.toLowerCase().includes(searchQuery.toLowerCase());
+            
+            // Enhanced search to include more fields
+            const searchString = [
+                pub.title,
+                pub.authors,
+                pub.journal,
+                pub.conference,
+                pub.book,
+                pub.year
+            ].filter(Boolean).join(' ').toLowerCase();
+            
+            const matchesSearch = searchString.includes(searchQuery.toLowerCase());
+            
             return matchesFilter && matchesSearch;
         });
 
@@ -321,13 +350,13 @@ document.addEventListener('DOMContentLoaded', () => {
         publicationsGrid.innerHTML = '';
 
         // Add filtered publications
-        filteredPubs.slice(0, visibleCount).forEach((pub, index) => {
-            const card = createPublicationCard(pub);
+        filteredPubs.slice(0, visibleCount + 1).forEach((pub, index) => { // +1 to show partial card
+            const card = createPublicationCard(pub, index, visibleCount);
             publicationsGrid.appendChild(card);
             
             // Animate each card
             gsap.to(card, {
-                opacity: 1,
+                opacity: index === visibleCount ? 0.7 : 1, // Partial opacity for last card
                 y: 0,
                 duration: 0.5,
                 delay: index * 0.1,
@@ -338,8 +367,17 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        if (loadMoreBtn) {
-            loadMoreBtn.style.display = filteredPubs.length > visibleCount ? 'block' : 'none';
+        // Hide load more functionality if no more items
+        if (filteredPubs.length <= visibleCount) {
+            const lastCard = publicationsGrid.querySelector('.partially-visible');
+            if (lastCard) {
+                lastCard.classList.remove('partially-visible');
+                lastCard.querySelector('.overlay-gradient').classList.remove('overlay-gradient');
+                const loadMoreBtn = lastCard.querySelector('.load-more-btn');
+                if (loadMoreBtn) {
+                    loadMoreBtn.remove();
+                }
+            }
         }
     }
 
@@ -355,7 +393,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.classList.remove('bg-blue-100', 'text-blue-800');
 
                 currentFilter = btn.getAttribute('data-filter');
-                visibleCount = 9;
+                visibleCount = 1; // Reset to 1 when filter changes
                 filterPublications();
             });
         });
@@ -364,18 +402,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             searchQuery = e.target.value.toLowerCase();
-            visibleCount = 9;
-            filterPublications();
-        });
-    }
-
-    if (loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', () => {
-            visibleCount += 9;
+            visibleCount = 1; // Reset to 1 when search changes
             filterPublications();
         });
     }
 
     // Initial load
-    setTimeout(filterPublications, 100); // Small delay to ensure DOM is ready
+    setTimeout(filterPublications, 100);
 });

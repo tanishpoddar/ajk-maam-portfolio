@@ -120,3 +120,70 @@
         border-bottom: none;
     }
 }
+
+/* Add these to your navbar.css */
+
+/* Animation for mobile menu */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Mobile menu styling */
+#mobile-menu {
+    transform-origin: top;
+    opacity: 0;
+}
+
+#mobile-menu.animate-fade-in {
+    opacity: 1;
+}
+
+/* Mobile link hover effect */
+.mobile-link {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.mobile-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #1e40af;
+    transition: width 0.3s ease;
+}
+
+.mobile-link:hover::after {
+    width: 100%;
+}
+
+/* Menu button transitions */
+#mobile-menu-button {
+    transition: transform 0.3s ease;
+}
+
+#mobile-menu-button:hover {
+    transform: scale(1.1);
+}
+
+#mobile-menu-button:active {
+    transform: scale(0.95);
+}
+
+/* Add backdrop blur for mobile menu */
+#mobile-menu .px-2 {
+    backdrop-filter: blur(8px);
+}
