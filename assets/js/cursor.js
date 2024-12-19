@@ -1,17 +1,11 @@
-// cursor.js
 document.addEventListener('DOMContentLoaded', () => {
-    // Create cursor element
     const cursor = document.createElement('div');
     cursor.classList.add('cursor-ring');
     document.body.appendChild(cursor);
-
-    // Update cursor position instantly
     document.addEventListener('mousemove', (e) => {
         cursor.style.left = e.clientX + 'px';
         cursor.style.top = e.clientY + 'px';
     });
-
-    // Ctrl key handling
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Control') {
             document.body.classList.add('ctrl-pressed');
@@ -23,8 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.remove('ctrl-pressed');
         }
     });
-
-    // Add hover effect for interactive elements
     const interactiveElements = document.querySelectorAll(`
         a, button, .interactive, input, select, textarea,
         [role="button"], [type="button"], [type="submit"],
@@ -41,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Handle cursor visibility
     document.addEventListener('mouseleave', () => {
         cursor.classList.add('cursor-hidden');
     });

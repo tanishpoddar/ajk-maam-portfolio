@@ -1,5 +1,3 @@
-/* cursor.css */
-/* Hide default cursor */
 * {
     cursor: none !important;
     caret-color: transparent !important;
@@ -25,7 +23,6 @@ textarea::-moz-selection,
     background: transparent;
 }
 
-/* cursor.css */
 * {
     cursor: none !important;
 }

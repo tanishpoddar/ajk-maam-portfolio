@@ -1,10 +1,6 @@
-// animations.js
 document.addEventListener('DOMContentLoaded', () => {
-    // Check if GSAP is loaded
     if (typeof gsap !== 'undefined') {
         gsap.registerPlugin(ScrollTrigger);
-
-        // Animate academic cards
         const academicCards = document.querySelectorAll('.academic-card');
         academicCards.forEach((card, index) => {
             gsap.from(card, {
@@ -20,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Animate expertise items
         const expertiseItems = document.querySelectorAll('.expertise-item');
         expertiseItems.forEach((item, index) => {
             gsap.from(item, {
@@ -36,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Animate language cards
         const languageCards = document.querySelectorAll('.language-card');
         languageCards.forEach((card, index) => {
             gsap.from(card, {
@@ -53,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Fallback animations if GSAP is not loaded
     const animateOnScroll = () => {
         const elements = document.querySelectorAll('[data-aos]');
         

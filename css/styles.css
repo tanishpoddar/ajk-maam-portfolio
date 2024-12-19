@@ -1,4 +1,3 @@
-/* style.css */
 /* Base styles */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -98,82 +97,152 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #64b5f6;
 }
-/* Publication card styles */
+
+/* Publications Section */
+.publications-container {
+    padding: 1rem;
+    max-width: 100%;
+    overflow: visible;
+}
+
+.publications-grid {
+    display: grid;
+    gap: 1.5rem;
+    width: 100%;
+    grid-template-columns: 1fr; 
+}
+
+/* Publication Cards */
 .publication-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: auto;
+    width: 100%;
     position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.publication-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.publication-card .title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e40af;
+    margin-bottom: 0.5rem;
+}
+
+.publication-card .authors {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.publication-card .journal {
+    font-size: 0.9rem;
+    color: #444;
+    font-style: italic;
+}
+
+.publication-card .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+/* Load More Button */
+.load-more-container {
+    text-align: center;
+    margin: 2rem 0;
+    padding: 1rem;
     width: 100%;
 }
 
-.partially-visible {
-    position: relative;
-    overflow: hidden;
-    max-height: 250px; /* Increased for mobile */
-}
-
-.overlay-gradient {
-    position: relative;
-    min-height: 200px; /* Minimum height to ensure content visibility */
-}
-
-.overlay-gradient::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 70%;
-    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,1) 100%);
-    pointer-events: none;
-    z-index: 1;
-}
-
 .load-more-btn {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    white-space: nowrap;
-    min-width: 200px;
-    padding: 10px 20px;
+    display: inline-block;
+    padding: 0.75rem 2rem;
     background-color: #3B82F6;
     color: white;
     border-radius: 9999px;
-    transition: all 0.3s ease;
+    font-weight: 500;
     cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+    min-width: 200px;
+    max-width: 100%;
 }
 
 .load-more-btn:hover {
     background-color: #2563EB;
+    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.4);
+    transform: translateY(-2px);
 }
 
-/* Mobile specific adjustments */
+/* Filter Buttons */
+.filter-btn {
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.filter-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .publications-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
 @media (max-width: 768px) {
-    .partially-visible {
-        max-height: 300px; /* Even more height for mobile */
+    .publications-container {
+        padding: 0.75rem;
     }
 
-    .overlay-gradient {
-        min-height: 250px;
+    .publication-card {
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .publication-card .title {
+        font-size: 1rem;
     }
 
     .load-more-btn {
-        bottom: 30px;
-        width: 80%; /* Wider button on mobile */
+        width: calc(100% - 2rem);
         max-width: 300px;
-        padding: 12px 24px;
-        font-size: 16px;
+        padding: 0.75rem 1.5rem;
+        margin: 1.5rem auto;
+    }
+
+    .filter-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
     }
 }
 
-/* Small mobile adjustments */
 @media (max-width: 480px) {
-    .partially-visible {
-        max-height: 350px;
+    .publications-container {
+        padding: 0.5rem;
+    }
+
+    .publication-card {
+        padding: 1rem;
     }
 
     .load-more-btn {
-        bottom: 40px;
-        width: 90%;
+        width: calc(100% - 1rem);
+        font-size: 0.875rem;
     }
 }

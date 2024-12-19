@@ -1,6 +1,4 @@
-// publications.js
 document.addEventListener('DOMContentLoaded', () => {
-    // Sample publication data - replace with your actual data
     const publications = [
         {
             type: 'Journal Papers',
@@ -280,58 +278,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentFilter = 'all';
     let searchQuery = '';
-    let visibleCount = 1; // Show only 1 card initially
+    let visibleCount = 1; 
 
-    function createPublicationCard(pub, index, totalVisible) {
+    function createPublicationCard(pub, index) {
         const card = document.createElement('div');
-        const isPartiallyVisible = index === totalVisible;
-        
-        card.className = `publication-card opacity-0 ${isPartiallyVisible ? 'partially-visible' : ''}`;
-        
+        card.className = 'publication-card opacity-0';
         card.innerHTML = `
-            <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 
-                ${isPartiallyVisible ? 'overlay-gradient' : ''}">
-                <div class="text-xs text-blue-500 font-semibold mb-2">${pub.year} • ${pub.type}</div>
-                <h3 class="text-lg font-semibold text-blue-900 mb-3">${pub.title}</h3>
-                <p class="text-gray-600 text-sm mb-4">${pub.authors}</p>
-                <div class="flex justify-between items-center">
-                    <span class="text-xs text-blue-600">DOI: ${pub.doi || 'N/A'}</span>
-                    ${pub.doi ? `
-                        <a href="https://doi.org/${pub.doi}" 
-                           target="_blank" 
-                           rel="noopener"
-                           class="text-blue-500 hover:text-blue-700 transition-colors">
-                            View Paper →
-                        </a>
-                    ` : ''}
-                </div>
-                ${isPartiallyVisible ? `
-                    <div class="absolute bottom-0 left-0 right-0 text-center pb-4 z-10">
-                        <button class="load-more-btn bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl">
-                            Load More Publications
-                        </button>
+            <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300 h-full">
+                <div class="flex flex-col h-full">
+                    <div class="text-xs text-blue-500 font-semibold mb-2">${pub.year} • ${pub.type}</div>
+                    <h3 class="text-lg font-semibold text-blue-900 mb-3">${pub.title}</h3>
+                    <p class="text-gray-600 text-sm mb-4">${pub.authors}</p>
+                    <div class="flex justify-between items-center mt-auto">
+                        <span class="text-xs text-blue-600">DOI: ${pub.doi || 'N/A'}</span>
+                        ${pub.doi ? `
+                            <a href="https://doi.org/${pub.doi}" 
+                               target="_blank" 
+                               rel="noopener"
+                               class="text-blue-500 hover:text-blue-700 transition-colors">
+                                View Paper →
+                            </a>
+                        ` : ''}
                     </div>
-                ` : ''}
+                </div>
             </div>
         `;
-
-        if (isPartiallyVisible) {
-            card.querySelector('.load-more-btn').addEventListener('click', () => {
-                visibleCount += 5; // Increase by 5 when clicked
-                filterPublications();
-            });
-        }
-
+    
         return card;
     }
-
-        function filterPublications() {
+    
+    function filterPublications() {
         if (!publicationsGrid) return;
-
+    
         const filteredPubs = publications.filter(pub => {
             const matchesFilter = currentFilter === 'all' || pub.type === currentFilter;
             
-            // Enhanced search to include more fields
             const searchString = [
                 pub.title,
                 pub.authors,
@@ -345,39 +326,58 @@ document.addEventListener('DOMContentLoaded', () => {
             
             return matchesFilter && matchesSearch;
         });
-
-        // Clear the grid
-        publicationsGrid.innerHTML = '';
-
-        // Add filtered publications
-        filteredPubs.slice(0, visibleCount + 1).forEach((pub, index) => { // +1 to show partial card
-            const card = createPublicationCard(pub, index, visibleCount);
-            publicationsGrid.appendChild(card);
-            
-            // Animate each card
-            gsap.to(card, {
-                opacity: index === visibleCount ? 0.7 : 1, // Partial opacity for last card
-                y: 0,
-                duration: 0.5,
-                delay: index * 0.1,
-                ease: "power2.out",
-                onStart: () => {
-                    card.style.transform = 'translateY(20px)';
+    
+        gsap.to('#publications-grid > *', {
+            opacity: 0,
+            y: 20,
+            duration: 0.3,
+            stagger: 0.05,
+            onComplete: () => {
+                publicationsGrid.innerHTML = '';
+                
+                filteredPubs.slice(0, visibleCount).forEach((pub, index) => {
+                    const card = createPublicationCard(pub, index);
+                    publicationsGrid.appendChild(card);
+                    
+                    gsap.fromTo(card, 
+                        { opacity: 0, y: 20 },
+                        { 
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.5,
+                            delay: index * 0.1,
+                            ease: "power2.out"
+                        }
+                    );
+                });
+    
+                const existingLoadMore = document.querySelector('.load-more-container');
+                if (existingLoadMore) {
+                    existingLoadMore.remove();
                 }
-            });
-        });
-
-        // Hide load more functionality if no more items
-        if (filteredPubs.length <= visibleCount) {
-            const lastCard = publicationsGrid.querySelector('.partially-visible');
-            if (lastCard) {
-                lastCard.classList.remove('partially-visible');
-                lastCard.querySelector('.overlay-gradient').classList.remove('overlay-gradient');
-                const loadMoreBtn = lastCard.querySelector('.load-more-btn');
-                if (loadMoreBtn) {
-                    loadMoreBtn.remove();
+    
+                if (filteredPubs.length > visibleCount) {
+                    const loadMoreContainer = document.createElement('div');
+                    loadMoreContainer.className = 'load-more-container text-center mt-8';
+                    loadMoreContainer.innerHTML = `
+                        <button class="load-more-btn bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl">
+                            Load More Publications
+                        </button>
+                    `;
+                    
+                    loadMoreContainer.querySelector('.load-more-btn').addEventListener('click', () => {
+                        visibleCount += 5;
+                        filterPublications();
+                    });
+                    
+                    publicationsGrid.after(loadMoreContainer);
                 }
             }
+        });
+    
+        const noResultsElement = document.getElementById('no-results');
+        if (noResultsElement) {
+            noResultsElement.style.display = filteredPubs.length === 0 ? 'block' : 'none';
         }
     }
 
@@ -393,7 +393,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.classList.remove('bg-blue-100', 'text-blue-800');
 
                 currentFilter = btn.getAttribute('data-filter');
-                visibleCount = 1; // Reset to 1 when filter changes
+                visibleCount = 1;
                 filterPublications();
             });
         });
@@ -402,11 +402,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             searchQuery = e.target.value.toLowerCase();
-            visibleCount = 1; // Reset to 1 when search changes
+            visibleCount = 1;
             filterPublications();
         });
     }
-
-    // Initial load
     setTimeout(filterPublications, 100);
 });
